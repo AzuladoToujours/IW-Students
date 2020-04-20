@@ -18,6 +18,7 @@ const swaggerUi = require('swagger-ui-express'),
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api', studentRoutes);
+app.set('trust proxy', 1);
 
 const start = async () => {
   try {

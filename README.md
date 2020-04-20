@@ -1,3 +1,3 @@
 # Ingeniería Web Students API
 
-## URL de DigitalOcean al SWAGGER: 
+## URL de HEROKU al SWAGGER:  https://iwstudents.herokuapp.com/api-docs/#/

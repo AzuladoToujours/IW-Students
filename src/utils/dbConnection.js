@@ -6,6 +6,7 @@ const connect =
   (opts = {
     useUnifiedTopology: true,
     useNewUrlParser: true,
+    useFindAndModify: false,
     useCreateIndex: true,
   }),
   (err) => {

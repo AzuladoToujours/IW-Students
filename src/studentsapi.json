@@ -1,0 +1,356 @@
+{
+    "openapi": "3.0.1",
+    "info": {
+      "title": "Students API",
+      "description": "Documentación de consumo STUDENTS API para la materia Ingeniería Web 2019-2.",
+      "termsOfService": "",
+      "contact": {
+        "email": "camiloa.mejia@udea.edu.co"
+      },
+      "version": "1.0.0"
+    },
+    "externalDocs": {
+      "description": "Find out more about Swagger",
+      "url": "http://swagger.io"
+    },
+    "servers": [
+      {
+        "url": "http://localhost:1313/api"
+      }
+    ],
+    "tags": [
+      {
+        "name": "CRUD",
+        "description": "Operaciones del CRUD"
+      },
+      {
+        "name": "STUDENT",
+        "description": "Operaciones del estudiante"
+      }
+    ],
+    "paths": {
+      "/": {
+        "get": {
+          "tags": [
+            "CRUD"
+          ],
+          "summary": "Obtiene la lista de estudiantes en el sistema",
+          "operationId": "getMany",
+          "responses": {
+            "200": {
+              "description": "successful operation",
+              "content": {}
+            }
+          }
+        }
+      },
+      "/student": {
+        "post": {
+             "tags": [
+               "CRUD"
+             ],
+             "summary": "Crea un usuario en el sistema",
+             "description": "Formato del semestre: 2019-1, 2019-2; Formato de la nota: 4.5, 0.0, 3.0. Los datos se sanitizan antes de su registro a la BD. Sí ingresa valores erroneos el programa se lo hará saber en el response. ",
+             "operationId": "createOne",
+             "requestBody": {
+               "content": {
+                 "application/json": {
+                   "schema": {
+                     "$ref": "#/components/schemas/Student"
+                   }
+                 }
+               },
+               "required": true
+             },
+             "responses": {
+               "200": {
+                 "description": "Estudiante creado exitosamente!",
+                 "content": {
+                   "application/json": {
+                     "schema": {
+                       "type": "string"
+                     }
+                   }
+                 }
+               },
+               "400": {
+                 "description": "Body inválido",
+                 "content": {
+                   "application/json": {
+                     "schema": {
+                       "type": "string"
+                     }
+                   }
+                 }
+               }
+             },
+             "x-codegen-request-body-name": "body"
+           }
+       },
+      "/student/{studentId}": {
+        "get": {
+          "tags": [
+            "CRUD"
+          ],
+          "summary": "Obtiene a un estudiante por un número de documento",
+          "operationId": "getOne",
+          "parameters": [
+            {
+              "name": "studentId",
+              "in": "path",
+              "description": "Id del documento que referencia estudiante",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+                "description": "successful operation",
+                "content": {}
+              },
+            "400": {
+              "description": "Id inválida",
+              "content": {}
+            }
+          }
+        },   
+        "put": {
+          "tags": [
+            "CRUD"
+          ],
+          "summary": "Actualizar un estudiante",
+          "description": "Formato del semestre: 2019-1, 2019-2; Formato de la nota: 4.5, 0.0, 3.0. Los datos se sanitizan antes de su registro a la BD. Sí ingresa valores erroneos el programa se lo hará saber en el response. ",
+          "operationId": "updateOne",
+          "parameters": [
+            {
+              "name": "studentId",
+              "in": "path",
+              "description": "Id del documento que referencia estudiante",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "requestBody": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            },
+            "required": true
+          },
+          "responses": {
+            "200": {
+              "description": "Estudiante actualizado exitosamente",
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "400": {
+              "description": "Id inválida",
+              "content": {}
+            }
+          },
+          "x-codegen-request-body-name": "body"
+        },
+        "delete": {
+          "tags": [
+            "CRUD"
+          ],
+          "summary": "Remover Estudiante",
+          "operationId": "removeOne",
+          "parameters": [
+            {
+              "name": "studentId",
+              "in": "path",
+              "description": "Id del documento que referencia estudiante",
+              "required": true,
+              "schema": {
+                "type": "string"
+              }
+            }
+          ],
+          "responses": {
+            "200": {
+              "description": "Estudiante removido exitosamente"
+            },
+            "400": {
+              "description": "Id inválida",
+              "content": {}
+            }
+          }
+        }
+      },
+      "/{course}/{semester}": {
+        "get": {
+            "tags": [
+              "STUDENT"
+            ],
+            "summary": "Obtener los estudiantes de un curso y semestre determinado",
+            "description": "El curso debe tener el mismo nombre que fue ingresado, respetando mayúsculas y mínusculas, en caso que contenga espacios: *POSTMAN*: estos se representaran con un '%20', es decir: Ingenieria Web => Ingenieria%20Web. *SWAGGER*: Swagger lo hace automáticamente, por lo tanto, sólo coloque el nombre del curso con espacios y respetando mayúsculas-minúsculas. Formato del semestre: 2019-1, 2019-2. Formato de la nota: 4.5, 0.0, 3.0; Sí ingresa valores erroneos el programa se lo hará saber en el response. ",
+
+            "operationId": "getCourseStudentsBySemester",
+            "parameters": [
+              {
+                "name": "course",
+                "in": "path",
+                "description": "El curso al que se hace referencia.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "semester",
+                "in": "path",
+                "description": "El semestre al que se hace referencia.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "Operación exitosa"
+              },
+              "400": {
+                "description": "No hay estudiantes en ese semestre / curso o parámetros erroneos",
+                "content": {}
+              }
+            }
+          },
+          "put": {
+            "tags": [
+              "STUDENT"
+            ],
+            "summary": "Actualizar la nota de los estudiantes de un curso y semestre determinado",
+            "description": "El curso debe tener el mismo nombre que fue ingresado, respetando mayúsculas y mínusculas, en caso que contenga espacios: *POSTMAN*: estos se representaran con un '%20', es decir: Ingenieria Web => Ingenieria%20Web. *SWAGGER*: Swagger lo hace automáticamente, por lo tanto, sólo coloque el nombre del curso con espacios y respetando mayúsculas-minúsculas. Formato del semestre: 2019-1, 2019-2. Formato de la nota: 4.5, 0.0, 3.0; Sí ingresa valores erroneos el programa se lo hará saber en el response. ",
+
+            "operationId": "updateCourseStudentsBySemester",
+            "parameters": [
+              {
+                "name": "course",
+                "in": "path",
+                "description": "El curso al que se hace referencia.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "semester",
+                "in": "path",
+                "description": "El semestre al que se hace referencia.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "requestBody": {
+              "content": {
+                "application/json": {
+                  "schema": {
+                    "$ref": "#/components/schemas/Note"
+                  }
+                }
+              },
+              "required": true
+            },
+            "responses": {
+              "200": {
+                "description": "Operación exitosa"
+              },
+              "400": {
+                "description": "No hay estudiantes en ese semestre / curso o parámetros erroneos",
+                "content": {}
+              }
+            }
+          }
+      },
+      "/average/{course}/{semester}": {
+        "get": {
+            "tags": [
+              "STUDENT"
+            ],
+            "summary": "Obtener el promedio de los estudiantes de un curso y semestre determinado",
+            "description": "El curso debe tener el mismo nombre que fue ingresado, respetando mayúsculas y mínusculas, en caso que contenga espacios: *POSTMAN*: estos se representaran con un '%20', es decir: Ingenieria Web => Ingenieria%20Web. *SWAGGER*: Swagger lo hace automáticamente, por lo tanto, sólo coloque el nombre del curso con espacios y respetando mayúsculas-minúsculas. Formato del semestre: 2019-1, 2019-2. Formato de la nota: 4.5, 0.0, 3.0; Sí ingresa valores erroneos el programa se lo hará saber en el response. ",
+
+            "operationId": "averageCourseStudentsBySemester",
+            "parameters": [
+              {
+                "name": "course",
+                "in": "path",
+                "description": "El curso al que se hace referencia.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              },
+              {
+                "name": "semester",
+                "in": "path",
+                "description": "El semestre al que se hace referencia.",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "200": {
+                "description": "successful operation"
+              },
+              "400": {
+                "description": "No hay estudiantes en ese semestre / curso o parámetros erroneos",
+                "content": {}
+              }
+            }
+          }
+      }
+    },
+    
+  
+    "components": {
+      "schemas": {
+        "Student": {
+          "type": "object",
+          "properties": {
+            "dni": {
+              "type": "string"
+            },
+            "names": {
+              "type": "string"
+            },
+            "semester": {
+              "type": "string"
+            },
+            "course": {
+              "type": "string"
+            },
+            "note": {
+              "type": "string"
+            }
+          }
+        },
+        "Note": {
+          "type": "object",
+          "properties": {
+            "note": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
